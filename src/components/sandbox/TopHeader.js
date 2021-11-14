@@ -1,12 +1,12 @@
 import React from 'react'
-import { Layout, Dropdown,Menu ,Avatar} from 'antd';
+import { Layout, Dropdown, Menu, Avatar } from 'antd';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     UserOutlined
 } from '@ant-design/icons';
-import {withRouter} from 'react-router-dom'
-import {connect} from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 const { Header } = Layout;
 
@@ -20,14 +20,14 @@ function TopHeader(props) {
         props.changeCollapsed()
     }
 
-    const {role:{roleName},username} = JSON.parse(localStorage.getItem("token"))
+    const { role: { roleName }, username } = JSON.parse(localStorage.getItem("token"))
 
     const menu = (
         <Menu>
-            <Menu.Item>
+            <Menu.Item key="1">
                 {roleName}
             </Menu.Item>
-            <Menu.Item danger onClick={()=>{
+            <Menu.Item key="2" danger onClick={() => {
                 localStorage.removeItem("token")
                 // console.log(props.history)
                 props.history.replace("/login")
@@ -42,9 +42,9 @@ function TopHeader(props) {
             }
 
             <div style={{ float: "right" }}>
-                <span>欢迎<span style={{color:"#1890ff"}}>{username}</span>回来</span>
-                <Dropdown overlay={menu}>
-                    <Avatar size="large" icon={<UserOutlined />} />
+                <span>欢迎<span style={{ color: "#1890ff" }}>{username}</span>回来</span>
+                <Dropdown overlay={menu} placement="bottomRight" arrow>
+                    <Avatar size={{ xs: 24, sm: 32, md: 40, lg: 52, xl: 52, xxl: 52 }} icon={<UserOutlined />} style={{ backgroundColor: '#87d068', marginLeft: '10px' }} />
                 </Dropdown>
             </div>
         </Header>
@@ -58,7 +58,7 @@ function TopHeader(props) {
  )(被包装的组件)
 */
 
-const mapStateToProps = ({CollApsedReducer:{isCollapsed}})=>{
+const mapStateToProps = ({ CollApsedReducer: { isCollapsed } }) => {
     // console.log(state)
     return {
         isCollapsed
@@ -66,7 +66,7 @@ const mapStateToProps = ({CollApsedReducer:{isCollapsed}})=>{
 }
 
 const mapDispatchToProps = {
-    changeCollapsed(){
+    changeCollapsed() {
         return {
             type: "change_collapsed"
             // payload:
@@ -74,4 +74,4 @@ const mapDispatchToProps = {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(TopHeader))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TopHeader))
