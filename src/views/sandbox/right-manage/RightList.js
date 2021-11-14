@@ -23,7 +23,7 @@ export default function RightList() {
         {
             title: 'ID',
             dataIndex: 'id',
-            // 这里render接收的参数为dataIndex的值
+            //render渲染效果， 这里render接收的参数为dataIndex的值
             render: (id) => {
                 return <b>{id}</b>
             }
@@ -36,7 +36,7 @@ export default function RightList() {
             title: "权限路径",
             dataIndex: 'key',
             render: (key) => {
-                return <Tag color="orange">{key}</Tag>
+                return <Tag color="green">{key}</Tag>
             }
         },
         {
@@ -58,6 +58,7 @@ export default function RightList() {
     ];
     // 通过气泡卡片开关选择是否拥有某个权限
     const switchMethod = (item) => {
+        // pagepermisson 控制其是否有权限在侧边导航栏加载出来。
         item.pagepermisson = item.pagepermisson === 1 ? 0 : 1
         // console.log(item)
         setdataSource([...dataSource])
