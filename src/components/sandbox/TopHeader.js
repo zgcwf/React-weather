@@ -24,10 +24,10 @@ function TopHeader(props) {
 
     const menu = (
         <Menu>
-            <Menu.Item key="1">
+            <Menu.Item key="x">
                 {roleName}
             </Menu.Item>
-            <Menu.Item key="2" danger onClick={() => {
+            <Menu.Item key="y" danger onClick={() => {
                 localStorage.removeItem("token")
                 // console.log(props.history)
                 props.history.replace("/login")
