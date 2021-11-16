@@ -1,7 +1,9 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 import { Form, Input, Select } from 'antd'
 const { Option } = Select
+// forwardRef包裹一个函数组件，接受两个形参props, ref,ref是形参，参数由父组件传递过来
 const UserForm = forwardRef((props, ref) => {
+    // 存储状态禁用
     const [isDisabled, setisDisabled] = useState(false)
 
     useEffect(() => {
@@ -61,7 +63,7 @@ const UserForm = forwardRef((props, ref) => {
             }}
         >
             <Form.Item
-                // name:用于获取到当前表单项，label表单项的名字。rules校验规则
+                // name:用于获取或设置当前表单项的字段，label表单项的名字。rules校验规则
                 name="username"
                 label="用户名"
                 rules={[{ required: true, message: 'Please input the title of collection!' }]}
@@ -78,6 +80,7 @@ const UserForm = forwardRef((props, ref) => {
             <Form.Item
                 name="region"
                 label="区域"
+                // 如果是超级管理员状态，此项会被禁用，所以要判断，将禁用状态的规则设置为空
                 rules={isDisabled ? [] : [{ required: true, message: 'Please input the title of collection!' }]}
             >
                 <Select disabled={isDisabled}>
@@ -94,9 +97,12 @@ const UserForm = forwardRef((props, ref) => {
                 rules={[{ required: true, message: 'Please input the title of collection!' }]}
             >
                 <Select onChange={(value) => {
-                    // console.log(value)
+                    // console.log(value)，value即选中的option的value
                     if (value === 1) {
+                        // value === 1,超级管理员，禁用
                         setisDisabled(true)
+                        // console.log(ref);
+                        // 可以使用 form.setFieldsValue 来动态改变表单值。
                         ref.current.setFieldsValue({
                             region: ""
                         })

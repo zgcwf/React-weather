@@ -17,6 +17,7 @@ export default function UserList() {
     const [regionList, setregionList] = useState([])
     const [current, setcurrent] = useState(null)
     const [isUpdateDisabled, setisUpdateDisabled] = useState(false)
+    // form表单的ref
     const addForm = useRef(null)
     const updateForm = useRef(null)
 
@@ -160,13 +161,16 @@ export default function UserList() {
 
         axios.delete(`/users/${item.id}`)
     }
-
+    // 点击确定后
     const addFormOK = () => {
+        //validateFields() 触发表单验证,得到了表单提交的数据value
         addForm.current.validateFields().then(value => {
-            // console.log(value)
+            console.log(1, addForm)
+            console.log(2, value)
+            // addForm，表单的ref
 
             setisAddVisible(false)
-
+            // 表单重置
             addForm.current.resetFields()
             //post到后端，生成id，再设置 datasource, 方便后面的删除和更新
             axios.post(`/users`, {
@@ -174,7 +178,7 @@ export default function UserList() {
                 "roleState": true,
                 "default": false,
             }).then(res => {
-                console.log(res.data)
+                console.log(3, res.data)
                 setdataSource([...dataSource, {
                     ...res.data,
                     role: roleList.filter(item => item.id === value.roleId)[0]
@@ -231,7 +235,7 @@ export default function UserList() {
                 }}
                 onOk={() => addFormOK()}
             >
-                {/* 通过props传递数据 */}
+                {/* 通过props传递数据，ref会传到form表单中被接收，相当于ref也绑定到了form上 */}
                 <UserForm regionList={regionList} roleList={roleList} ref={addForm}></UserForm>
             </Modal>
 
