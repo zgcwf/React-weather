@@ -3,7 +3,7 @@ import { Form, Input, Select } from 'antd'
 const { Option } = Select
 // forwardRef包裹一个函数组件，接受两个形参props, ref,ref是形参，参数由父组件传递过来
 const UserForm = forwardRef((props, ref) => {
-    // 存储状态禁用
+    // 存储状态--是否禁用
     const [isDisabled, setisDisabled] = useState(false)
 
     useEffect(() => {
@@ -50,6 +50,7 @@ const UserForm = forwardRef((props, ref) => {
 
     return (
         <Form
+            // 接收ref
             ref={ref}
             // 表单布局
             layout="horizontal "
@@ -102,7 +103,7 @@ const UserForm = forwardRef((props, ref) => {
                         // value === 1,超级管理员，禁用
                         setisDisabled(true)
                         // console.log(ref);
-                        // 可以使用 form.setFieldsValue 来动态改变表单值。
+                        // 可以使用 form.setFieldsValue 来动态改变表单值。将地域设置为空
                         ref.current.setFieldsValue({
                             region: ""
                         })
