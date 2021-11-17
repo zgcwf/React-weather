@@ -35,9 +35,10 @@ export default function UserList() {
         }
         axios.get("/users?_expand=role").then(res => {
             const list = res.data
+            // 登录后进行用户列表table渲染权限判断，如果是超级管理员，获得所有的权限列表，否则获取到和登录名字相同的项的权限列表以及和自己地区相同并且是编辑的权限列表
             setdataSource(roleObj[roleId] === "superadmin" ? list : [
-                ...list.filter(item => item.username === username),
-                ...list.filter(item => item.region === region && roleObj[item.roleId] === "editor")
+                ...list.filter(item => item.username === username), //自己的权限
+                ...list.filter(item => item.region === region && roleObj[item.roleId] === "editor") //自己下属的权限
             ])
         })
     }, [roleId, region, username])
@@ -261,6 +262,7 @@ export default function UserList() {
                 }}
                 onOk={() => updateFormOK()}
             >
+                {/* isUpdate 用来标志是更新，在UserForm中使用 */}
                 <UserForm regionList={regionList} roleList={roleList} ref={updateForm} isUpdateDisabled={isUpdateDisabled} isUpdate={true}></UserForm>
             </Modal>
 

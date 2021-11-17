@@ -69,9 +69,9 @@ function SideMenu(props) {
       setMeun(res.data)
     })
   }, [])
-
+  // 从token中取出当前用户的权限列表，解构出来
   const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
-  // 控制获取到的数据是否渲染到侧边栏的函数，如果返回的数组中包含pagepermisson的值为1并且包含key值，返回true
+  // 控制获取到的数据是否渲染到侧边栏的函数，如果pagepermisson的值为1并且当前用户权限列表包含key值，返回true
   const checkPagePermission = (item) => {
     return item.pagepermisson === 1 && rights.includes(item.key)
   }

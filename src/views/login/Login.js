@@ -2,6 +2,7 @@ import React from 'react'
 import { Form, Button, Input, message } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './Login.css'
+// 引入一个react特效粒子库
 import Particles from 'react-particles-js';
 import axios from 'axios'
 export default function Login(props) {
@@ -14,6 +15,7 @@ export default function Login(props) {
       if (res.data.length === 0) {
         message.error("用户名或密码不匹配")
       } else {
+        // 将得到的数据存储到token中
         localStorage.setItem("token", JSON.stringify(res.data[0]))
         props.history.push("/")
       }
@@ -21,18 +23,15 @@ export default function Login(props) {
   }
   return (
     <div style={{ background: 'rgb(35, 39, 65)', height: "100%", overflow: 'hidden' }}>
+      {/* 一个粒子特效库 */}
       <Particles height={document.documentElement.clientHeight} params={
         {
           "background": {
             "color": {
-              "value": "rgb(35, 39, 65)"
-            },
-            "position": "50% 50%",
-            "repeat": "no-repeat",
-            "size": "cover"
+              "value": "#000000"
+            }
           },
           "fullScreen": {
-            "enable": true,
             "zIndex": 1
           },
           "interactivity": {
@@ -43,49 +42,34 @@ export default function Login(props) {
               },
               "onHover": {
                 "enable": true,
-                "mode": "bubble",
-                "parallax": {
-                  "force": 60
-                }
-              }
-            },
-            "modes": {
-              "bubble": {
-                "distance": 400,
-                "duration": 2,
-                "opacity": 1,
-                "size": 40
-              },
-              "grab": {
-                "distance": 400
+                "mode": "repulse"
               }
             }
           },
           "particles": {
             "color": {
-              "value": "#ffffff"
+              "value": "#ff0000",
+              "animation": {
+                "h": {
+                  "enable": true,
+                  "speed": 20
+                }
+              }
             },
             "links": {
               "color": {
-                "value": "#fff"
+                "value": "#ffffff"
               },
-              "distance": 150,
+              "enable": true,
               "opacity": 0.4
             },
             "move": {
-              "attract": {
-                "rotate": {
-                  "x": 600,
-                  "y": 1200
-                }
-              },
               "enable": true,
               "outModes": {
-                "default": "bounce",
-                "bottom": "bounce",
-                "left": "bounce",
-                "right": "bounce",
-                "top": "bounce"
+                "bottom": "out",
+                "left": "out",
+                "right": "out",
+                "top": "out"
               },
               "speed": 6
             },
@@ -93,84 +77,15 @@ export default function Login(props) {
               "density": {
                 "enable": true
               },
-              "value": 170
+              "value": 100
             },
             "opacity": {
-              "animation": {
-                "speed": 1,
-                "minimumValue": 0.1
-              }
-            },
-            "shape": {
-              "options": {
-                "character": {
-                  "fill": false,
-                  "font": "Verdana",
-                  "style": "",
-                  "value": "*",
-                  "weight": "400"
-                },
-                "char": {
-                  "fill": false,
-                  "font": "Verdana",
-                  "style": "",
-                  "value": "*",
-                  "weight": "400"
-                },
-                "polygon": {
-                  "nb_sides": 5
-                },
-                "star": {
-                  "nb_sides": 5
-                },
-                "image": {
-                  "height": 32,
-                  "replace_color": true,
-                  "src": "/logo192.png",
-                  "width": 32
-                },
-                "images": {
-                  "height": 32,
-                  "replace_color": true,
-                  "src": "/logo192.png",
-                  "width": 32
-                }
-              },
-              "type": "image"
+              "value": 0.5
             },
             "size": {
-              "value": 16,
-              "animation": {
-                "speed": 40,
-                "minimumValue": 0.1
-              }
-            },
-            "stroke": {
-              "color": {
-                "value": "#000000",
-                "animation": {
-                  "h": {
-                    "count": 0,
-                    "enable": false,
-                    "offset": 0,
-                    "speed": 1,
-                    "sync": true
-                  },
-                  "s": {
-                    "count": 0,
-                    "enable": false,
-                    "offset": 0,
-                    "speed": 1,
-                    "sync": true
-                  },
-                  "l": {
-                    "count": 0,
-                    "enable": false,
-                    "offset": 0,
-                    "speed": 1,
-                    "sync": true
-                  }
-                }
+              "value": {
+                "min": 0.1,
+                "max": 3
               }
             }
           }
@@ -181,6 +96,7 @@ export default function Login(props) {
         <Form
           name="normal_login"
           className="login-form"
+          // 提交表单且数据验证成功后回调事件,点击提交之后所有的表单内容都会在次收到
           onFinish={onFinish}
         >
           <Form.Item

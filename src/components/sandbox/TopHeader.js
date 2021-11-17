@@ -19,7 +19,7 @@ function TopHeader(props) {
         // console.log(props)
         props.changeCollapsed()
     }
-
+    // 读取token值并解构
     const { role: { roleName }, username } = JSON.parse(localStorage.getItem("token"))
 
     const menu = (

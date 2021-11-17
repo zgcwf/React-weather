@@ -16,33 +16,46 @@ const UserForm = forwardRef((props, ref) => {
         "2": "admin",
         "3": "editor"
     }
+    // Region 关于不同角色登录后角色列表添加和更新用户时表单区域选择的一些功能限制
     const checkRegionDisabled = (item) => {
+        // 如果在更新中使用
         if (props.isUpdate) {
+            // 如果是超级管理员，返回false，全都能用
             if (roleObj[roleId] === "superadmin") {
                 return false
             } else {
+                // 如果不是超级管理员，返回true，全都不能用
                 return true
             }
         } else {
+            // 如果在添加中使用
             if (roleObj[roleId] === "superadmin") {
+                // 如果是超级管理员，返回false，全都能用
                 return false
             } else {
+                // 只有返回false的能用，即当前项的地域等于当前登陆者的地域
                 return item.value !== region
             }
         }
     }
-
+    // Role 关于不同角色登录后角色列表添加和更新用户时表单角色选择的一些功能限制
     const checkRoleDisabled = (item) => {
+        // 如果在更新中使用
         if (props.isUpdate) {
             if (roleObj[roleId] === "superadmin") {
+                // 如果是超级管理员，返回false，全都能用
                 return false
             } else {
+                // 如果不是超级管理员，返回true，全都不能用
                 return true
             }
         } else {
+            // 如果在添加中使用
             if (roleObj[roleId] === "superadmin") {
+                // 如果是超级管理员，返回false，全都能用
                 return false
             } else {
+                // 只有返回false的能用，即当前项的id映射等于编辑
                 return roleObj[item.id] !== "editor"
             }
         }

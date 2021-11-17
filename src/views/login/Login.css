@@ -1,6 +1,6 @@
 .formContainer{
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: #fff;
     width: 500px;
     height: 300px;
     top:50%;
@@ -15,5 +15,5 @@
     height: 80px;
     line-height: 80px;
     font-size: 30px;
-    color:white;
+    color:#000;
 }
