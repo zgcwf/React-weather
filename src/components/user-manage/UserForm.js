@@ -5,7 +5,7 @@ const { Option } = Select
 const UserForm = forwardRef((props, ref) => {
     // 存储状态--是否禁用
     const [isDisabled, setisDisabled] = useState(false)
-
+    // 接收到传递过来的isUpdateDisabled并监听，一旦改变就修改isDisabled的值，设置其是否禁用
     useEffect(() => {
         setisDisabled(props.isUpdateDisabled)
     }, [props.isUpdateDisabled])
@@ -103,7 +103,7 @@ const UserForm = forwardRef((props, ref) => {
                         // value === 1,超级管理员，禁用
                         setisDisabled(true)
                         // console.log(ref);
-                        // 可以使用 form.setFieldsValue 来动态改变表单值。将地域设置为空
+                        // 可以使用 form.setFieldsValue 来动态设定表单值，将地域设置为空
                         ref.current.setFieldsValue({
                             region: ""
                         })

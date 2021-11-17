@@ -8,17 +8,21 @@ const { confirm } = Modal
 export default function UserList() {
     // 存储从/users?_expand=role接口返回的数据
     const [dataSource, setdataSource] = useState([])
-    // 存储是否能够看见的状态
+    // 存储添加表单是否能够看见的状态
     const [isAddVisible, setisAddVisible] = useState(false)
+    // 存储更新表单是否能够看见的状态
     const [isUpdateVisible, setisUpdateVisible] = useState(false)
     // 存储从/roles接口返回的数据，三个角色管理员
     const [roleList, setroleList] = useState([])
     // 存储从/regions接口返回的数据，各大洲
     const [regionList, setregionList] = useState([])
+    // 用于存储当前更新项的item
     const [current, setcurrent] = useState(null)
+    // 更新按钮中的禁用状态
     const [isUpdateDisabled, setisUpdateDisabled] = useState(false)
-    // form表单的ref
+    // 添加form表单的ref
     const addForm = useRef(null)
+    // 更新form表单的ref
     const updateForm = useRef(null)
 
     const { roleId, region, username } = JSON.parse(localStorage.getItem("token"))
@@ -56,18 +60,21 @@ export default function UserList() {
         {
             title: '区域',
             dataIndex: 'region',
+            // filters 属性来指定需要筛选菜单的列
             filters: [
+                // 遍历出需要筛选菜单的列，并重新命名使其符合渲染规则
                 ...regionList.map(item => ({
                     text: item.title,
                     value: item.value
                 })),
+                // 后端数据中没有全球，添加上
                 {
                     text: "全球",
                     value: "全球"
                 }
 
             ],
-
+            // onFilter 用于筛选当前数据，value为选中的值，item为每一项
             onFilter: (value, item) => {
                 if (value === "全球") {
                     return item.region === ""
@@ -110,17 +117,20 @@ export default function UserList() {
             }
         }
     ];
-
+    // 点击更新按钮调用
     const handleUpdate = (item) => {
+        // 用setTimeout将其变为同步触发
         setTimeout(() => {
+            // 点击更新按钮将form表单设置为可见
             setisUpdateVisible(true)
             if (item.roleId === 1) {
-                //禁用
+                //如果是超级管理员，传递true，禁用
                 setisUpdateDisabled(true)
             } else {
                 //取消禁用
                 setisUpdateDisabled(false)
             }
+            // 获取到item的值，放到到表单域中
             updateForm.current.setFieldsValue(item)
         }, 0)
 
@@ -161,12 +171,12 @@ export default function UserList() {
 
         axios.delete(`/users/${item.id}`)
     }
-    // 点击确定后
+    // 点击确定后，添加用户信息
     const addFormOK = () => {
         //validateFields() 触发表单验证,得到了表单提交的数据value
         addForm.current.validateFields().then(value => {
-            console.log(1, addForm)
-            console.log(2, value)
+            // console.log(1, addForm)
+            // console.log(2, value)
             // addForm，表单的ref
 
             setisAddVisible(false)
@@ -178,7 +188,7 @@ export default function UserList() {
                 "roleState": true,
                 "default": false,
             }).then(res => {
-                console.log(3, res.data)
+                // console.log(3, res.data)
                 setdataSource([...dataSource, {
                     ...res.data,
                     role: roleList.filter(item => item.id === value.roleId)[0]
@@ -188,7 +198,7 @@ export default function UserList() {
             console.log(err)
         })
     }
-
+    // 点击确定后，更新用户信息
     const updateFormOK = () => {
         updateForm.current.validateFields().then(value => {
             // console.log(value)
@@ -246,6 +256,7 @@ export default function UserList() {
                 cancelText="取消"
                 onCancel={() => {
                     setisUpdateVisible(false)
+                    // 为了修复你点击了超级管理员之后地域选项被禁用，但没有确定，而是点击了取消，这样第二次点开，地域选项还是被禁用，取一下反，会让页面更新一下，而且对页面没影响
                     setisUpdateDisabled(!isUpdateDisabled)
                 }}
                 onOk={() => updateFormOK()}
