@@ -9,6 +9,7 @@ import NewsRouter from '../../components/sandbox/NewsRouter'
 const { Content } = Layout
 
 export default function NewsSandBox() {
+    // 路由加载进度条
     NProgress.start()
     useEffect(() => {
         NProgress.done()
@@ -27,6 +28,7 @@ export default function NewsSandBox() {
                         overflow: "auto"
                     }}
                 >
+                    {/*  项目中所有路由*/}
                     <NewsRouter></NewsRouter>
                 </Content>
             </Layout>

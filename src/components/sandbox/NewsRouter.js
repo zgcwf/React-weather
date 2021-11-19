@@ -20,6 +20,7 @@ import NewsUpdate from '../../views/sandbox/news-manage/NewsUpdate'
 import { Spin } from 'antd'
 
 import { connect } from 'react-redux'
+// 路由映射表
 const LocalRouterMap = {
     "/home": Home,
     "/user-manage/list": UserList,
@@ -38,7 +39,7 @@ const LocalRouterMap = {
 }
 
 function NewsRouter(props) {
-
+    // 存储从后端接收到的数据
     const [BackRouteList, setBackRouteList] = useState([])
     useEffect(() => {
         Promise.all([
@@ -50,14 +51,16 @@ function NewsRouter(props) {
             // console.log(BackRouteList)
         })
     }, [])
-
+    // 从cookie中结构出rights--当前用户权限
     const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
 
     const checkRoute = (item) => {
+        // 后端必须返回此路由并且pagepermisson值为1（表示有权限渲染到侧边栏）
         return LocalRouterMap[item.key] && (item.pagepermisson || item.routepermisson)
     }
 
     const checkUserPermission = (item) => {
+        // 当前用户权限必须包含这个路径
         return rights.includes(item.key)
     }
 
@@ -65,8 +68,11 @@ function NewsRouter(props) {
         <Spin size="large" spinning={props.isLoading}>
             <Switch>
                 {
+                    // 遍历动态生成路由组件
                     BackRouteList.map(item => {
+                        // 控制权限:即动态生成路由的条件
                         if (checkRoute(item) && checkUserPermission(item)) {
+                            // 动态生成路由组件时，因为后端返回的路径有一级路由，虽然匹配不到组件，但是在点击二级路由跳转页面时，路径会优先匹配到一级路由，为空，页面无法展示
                             return <Route path={item.key} key={item.key} component={LocalRouterMap[item.key]} exact />
                         }
                         return null
@@ -76,6 +82,7 @@ function NewsRouter(props) {
 
                 <Redirect from="/" to="/home" exact />
                 {
+                    // 初始数据没有获取，会导致直接匹配到这个组件，所以要在之前加上一个长度大于0的判断
                     BackRouteList.length > 0 && <Route path="*" component={Nopermission} />
                 }
             </Switch>
